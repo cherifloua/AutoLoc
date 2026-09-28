@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "client")
@@ -37,4 +39,8 @@ public class Client {
 
     @Column(name = "date_inscription")
     private LocalDate dateInscription;
+
+    // 1 Client → N Reservation (cascade = PERSIST)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.PERSIST)
+    private List<Reservation> reservations = new ArrayList<>();
 }
