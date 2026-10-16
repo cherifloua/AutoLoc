@@ -29,7 +29,7 @@ public class Maintenance {
     @Column(length = 255)
     private String description;
 
-    // N Maintenance → 1 Vehicule (côté propriétaire)
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vehicule_id")
     private Vehicule vehicule;

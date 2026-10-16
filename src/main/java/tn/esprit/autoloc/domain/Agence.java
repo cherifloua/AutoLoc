@@ -33,7 +33,7 @@ public class Agence {
     @Column(length = 20)
     private String telephone;
 
-    // 1 Agence → N Vehicule (côté inverse, mappedBy)
+
     @OneToMany(mappedBy = "agence", fetch = FetchType.LAZY)
     private List<Vehicule> vehicules = new ArrayList<>();
 }

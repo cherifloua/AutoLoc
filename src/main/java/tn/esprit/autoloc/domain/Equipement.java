@@ -24,7 +24,7 @@ public class Equipement {
     @Column(nullable = false, length = 100)
     private String libelle;
 
-    // N Equipement ↔ N Vehicule (côté inverse)
+
     @ManyToMany(mappedBy = "equipements", fetch = FetchType.LAZY)
     private List<Vehicule> vehicules = new ArrayList<>();
 }

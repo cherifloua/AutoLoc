@@ -32,12 +32,12 @@ public class Contrat {
     @Column(nullable = false)
     private Boolean valide;
 
-    // 1 Contrat ↔ 1 Reservation (côté propriétaire)
+
     @OneToOne
     @JoinColumn(name = "reservation_id", unique = true)
     private Reservation reservation;
 
-    // 1 Contrat → N Paiement (cascade = ALL)
+
     @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL)
     private List<Paiement> paiements = new ArrayList<>();
 }

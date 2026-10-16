@@ -30,12 +30,12 @@ public class Reservation {
     @Column(nullable = false, length = 20)
     private StatutReservation statut;
 
-    // N Reservation → 1 Client (côté propriétaire)
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     private Client client;
 
-    // N Reservation → 1 Vehicule (côté propriétaire)
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vehicule_id")
     private Vehicule vehicule;
