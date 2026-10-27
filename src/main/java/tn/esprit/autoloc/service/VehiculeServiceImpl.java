@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.domain.StatutVehicule;
 import tn.esprit.autoloc.domain.Vehicule;
 import tn.esprit.autoloc.repository.IVehiculeRepository;
+import tn.esprit.autoloc.service.validator.VehiculeValidator;
 
 import java.util.List;
 
@@ -14,18 +15,28 @@ public class VehiculeServiceImpl implements IVehiculeService {
     @Autowired
     private IVehiculeRepository vehiculeRepository;
 
+    @Autowired
+    private VehiculeValidator vehiculeValidator;
+
+    @Autowired
+    private JournalisationService journalisationService;
+
     @Override
     public Vehicule ajouterVehicule(Vehicule vehicule) {
+        vehiculeValidator.validerVehicule(vehicule);
+        journalisationService.logAjoutVehicule(vehicule.getImmatriculation());
         return vehiculeRepository.save(vehicule);
     }
 
     @Override
     public Vehicule modifierVehicule(Vehicule vehicule) {
+        journalisationService.logModificationVehicule(vehicule.getImmatriculation());
         return vehiculeRepository.save(vehicule);
     }
 
     @Override
     public void supprimerVehicule(Long idVehicule) {
+        journalisationService.logSuppressionVehicule(idVehicule);
         vehiculeRepository.deleteById(idVehicule);
     }
 

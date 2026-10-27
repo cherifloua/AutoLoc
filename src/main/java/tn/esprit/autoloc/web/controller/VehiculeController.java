@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import tn.esprit.autoloc.domain.StatutVehicule;
 import tn.esprit.autoloc.domain.Vehicule;
 import tn.esprit.autoloc.service.IVehiculeService;
+import tn.esprit.autoloc.service.tarification.TarificationService;
 
 import java.util.List;
 
@@ -17,6 +18,9 @@ public class VehiculeController {
 
     @Autowired
     private IVehiculeService vehiculeService;
+
+    @Autowired
+    private TarificationService tarificationService;
 
     @Operation(description = "Récupérer tous les véhicules de la base de données")
     @GetMapping
@@ -49,9 +53,25 @@ public class VehiculeController {
         vehiculeService.supprimerVehicule(id);
     }
 
-    @Operation(description = "Filtrer les véhicules par leur statut (DISPONIBLE, LOUE, MAINTENANCE)")
+    @Operation(description = "Filtrer les véhicules par leur statut")
     @GetMapping("/statut/{statut}")
     public List<Vehicule> getVehiculesByStatut(@PathVariable StatutVehicule statut) {
         return vehiculeService.getVehiculesByStatut(statut);
+    }
+
+    // NOUVEL ENDPOINT POUR LA TARIFICATION
+    @Operation(description = "Calculer le tarif selon la stratégie (STANDARD, WEEKEND, LONGUE_DUREE, ENTREPRISE)")
+    @GetMapping("/{id}/tarif")
+    public double calculerTarif(
+            @PathVariable Long id,
+            @RequestParam String type,
+            @RequestParam int jours) {
+
+        Vehicule vehicule = vehiculeService.getVehicule(id);
+        if (vehicule == null) {
+            throw new IllegalArgumentException("Véhicule introuvable avec l'id : " + id);
+        }
+
+        return tarificationService.calculer(type, vehicule.getTarifJournalier().doubleValue(), jours);
     }
 }
